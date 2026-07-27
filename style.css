@@ -2,139 +2,165 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-html,body{
-    width:100%;
-    height:100%;
+body{
     overflow:hidden;
     background:#000;
-    font-family:Arial,Helvetica,sans-serif;
+    color:#fff;
+    width:100vw;
+    height:100vh;
 }
 
-canvas{
-    display:block;
-}
-
-#container{
+/* Fondo de estrellas */
+#stars{
     position:fixed;
-    inset:0;
-}
-
-#overlay{
-    position:fixed;
-    top:30px;
+    top:0;
+    left:0;
     width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    z-index:100;
-    pointer-events:none;
+    height:100%;
+    z-index:0;
 }
 
-#titulo{
+/* Texto superior */
 
-    color:white;
-
-    font-size:18px;
-
-    font-weight:600;
-
-    padding:12px 28px;
-
-    border:1px solid rgba(255,255,255,.18);
-
-    border-radius:40px;
-
-    backdrop-filter:blur(12px);
-
-    background:rgba(255,255,255,.05);
-
-    box-shadow:
-    0 0 25px rgba(170,80,255,.25);
-
-}
-
-#mensaje{
-
-    margin-top:12px;
-
-    color:#cfcfcf;
-
-    font-size:14px;
-
-    letter-spacing:1px;
-
-    text-shadow:
-    0 0 15px #9b5cff;
-
-}
-
-#musicPanel{
-
-    position:fixed;
-
-    bottom:25px;
-
+.titulo{
+    position:absolute;
+    top:25px;
     left:50%;
-
     transform:translateX(-50%);
-
-    z-index:200;
-
-}
-
-#playMusic{
-
-    padding:15px 28px;
-
-    border:none;
-
-    border-radius:35px;
-
-    cursor:pointer;
-
+    padding:12px 28px;
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:30px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(8px);
     color:white;
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:1px;
+    text-align:center;
+    z-index:100;
+    text-shadow:0 0 15px white;
+}
 
-    font-size:15px;
+/* Escena */
 
-    background:rgba(255,255,255,.08);
+#scene{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    perspective:1200px;
+    overflow:hidden;
+}
 
-    border:1px solid rgba(255,255,255,.18);
+/* Esfera */
 
-    backdrop-filter:blur(20px);
-
-    transition:.35s;
-
+.sphere{
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#222,#000);
     box-shadow:
-    0 0 35px rgba(170,80,255,.18);
-
+        0 0 35px rgba(255,255,255,.18),
+        inset -20px -20px 40px rgba(255,255,255,.05);
+    z-index:5;
 }
 
-#playMusic:hover{
+/* Contenedor de palabras */
 
-    transform:scale(1.06);
-
-    background:rgba(170,80,255,.25);
-
+#wordContainer{
+    position:absolute;
+    width:100%;
+    height:100%;
+    transform-style:preserve-3d;
 }
 
-.fade{
+/* Palabras */
 
-    animation:fade 2s;
-
+.word{
+    position:absolute;
+    left:50%;
+    top:50%;
+    color:#fff;
+    font-size:18px;
+    font-weight:600;
+    white-space:nowrap;
+    text-shadow:
+        0 0 8px white,
+        0 0 16px white,
+        0 0 30px white;
+    user-select:none;
+    pointer-events:none;
+    transition:transform .1s linear;
 }
 
-@keyframes fade{
+/* Botón de música */
 
-0%{
-opacity:0;
-transform:translateY(-20px);
+.musicBox{
+    position:fixed;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
 }
 
-100%{
-opacity:1;
-transform:translateY(0);
+#musicBtn{
+    padding:14px 28px;
+    border:none;
+    border-radius:35px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.25);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    transition:.3s;
+}
+
+#musicBtn:hover{
+    background:white;
+    color:black;
+    box-shadow:0 0 20px white;
+}
+
+/* Pie */
+
+.footer{
+    position:fixed;
+    bottom:10px;
+    width:100%;
+    text-align:center;
+    font-size:13px;
+    color:rgba(255,255,255,.5);
+    z-index:100;
+}
+
+/* Celulares */
+
+@media(max-width:700px){
+
+.titulo{
+    width:90%;
+    font-size:17px;
+}
+
+.word{
+    font-size:15px;
+}
+
+.sphere{
+    width:140px;
+    height:140px;
+}
+
+#musicBtn{
+    font-size:15px;
+    padding:13px 24px;
 }
 
 }
