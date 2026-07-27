@@ -1,55 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ale 🤍</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Para Ale ❤️</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="overlay">
+    <!-- Fondo de estrellas -->
+    <canvas id="stars"></canvas>
 
-<h1 id="titulo">
-Para Ale ❤️
-</h1>
+    <!-- Mensaje superior -->
+    <div class="titulo">
+        Para Ale 🤍
+    </div>
 
-<p id="mensaje">
-Eres una persona maravillosa.
-</p>
+    <!-- Contenedor principal -->
+    <div id="scene">
 
-</div>
+        <!-- Esfera central -->
+        <div class="sphere"></div>
 
-<div id="musicPanel">
+        <!-- Las palabras aparecerán aquí -->
+        <div id="wordContainer"></div>
 
-<button id="playMusic">
-🎵 Elegir canción
-</button>
+    </div>
 
-<input
-type="file"
-id="musicFile"
-accept=".mp3,audio/*"
-hidden>
+    <!-- Botón de música -->
+    <div class="musicBox">
 
-</div>
+        <button id="musicBtn">
+            ▶ Reproducir música
+        </button>
 
-<div id="container"></div>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.167.1/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.167.1/examples/jsm/"
-  }
-}
-</script>
+        <audio id="music">
+            <source src="song.mp3" type="audio/mpeg">
+        </audio>
 
-<script type="module" src="script.js"></script>
+    </div>
+
+    <!-- Créditos pequeños -->
+    <div class="footer">
+        Hecho con cariño para Ale ✨
+    </div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
