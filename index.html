@@ -147,26 +147,43 @@ body.night::after{opacity:1;}
 }  
 .btn:hover{background:rgba(255,255,255,0.4);transform:scale(1.05);}  
 
-/* 🎈 globos */
-.globo{
+.saturno{
   position:absolute;
-  width:80px;
+  width:100px;
   height:100px;
-  border-radius:50% 50% 45% 45%;
-  background:radial-gradient(circle at 30% 30%, #ffffffaa, var(--color) 70%);
-  box-shadow:inset -5px -10px 20px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.3);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%, #fff7d6 5%, #f5d58a 30%, #d2a55a 70%, #8b5e34 100%);
+  box-shadow:
+    inset -18px -18px 25px rgba(0,0,0,.35),
+    inset 10px 10px 15px rgba(255,255,255,.3),
+    0 0 25px rgba(255,220,150,.35);
   animation:float linear infinite;
 }
-.globo::after{
+
+.saturno::before{
   content:"";
   position:absolute;
-  bottom:-60px;
-  left:50%;
-  width:2px;
-  height:60px;
-  background:rgba(255,255,255,0.7);
+  width:145px;
+  height:34px;
+  border:6px solid rgba(225,210,170,.9);
+  border-radius:50%;
+  top:33px;
+  left:-22px;
+  transform:rotate(-18deg);
+  box-shadow:0 0 10px rgba(255,255,255,.2);
 }
 
+.saturno::after{
+  content:"";
+  position:absolute;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  top:20px;
+  left:20px;
+  background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.35), transparent 70%);
+                             }
 /* 🎉 confeti */
 .confeti{
   position:absolute;
@@ -208,7 +225,7 @@ body.night::after{opacity:1;}
 <div class="moon" id="moon"></div>  
 
 <div class="card">  
-  <h2>Hola Hanny :)</h2>  
+  <h2>Hola Alesita :)</h2>  
 
   <div class="envelope" id="envelope">  
     <div class="flap"></div>  
@@ -224,7 +241,7 @@ body.night::after{opacity:1;}
   </p>  
 </div>  
 
-<audio id="music" src="mañanitas.mp3"></audio>
+<audio id="music" src="song.mp3"></audio>
 
 <script>  
 
@@ -392,10 +409,9 @@ const colores=["#42a5f5","#ef5350","#66bb6a","#ffca28","#ab47bc","#ffa726"];
 
 setInterval(()=>{  
   const g=document.createElement("div");  
-  g.className="globo";  
+  g.className="saturno";  
   g.style.left=Math.random()*100+"vw";  
   g.style.animationDuration=(10+Math.random()*6)+"s";  
-  g.style.setProperty('--color', colores[Math.floor(Math.random()*colores.length)]);
   document.body.appendChild(g);  
 
   setTimeout(()=>{
