@@ -1,169 +1,254 @@
-import * as THREE from "three";
+// ===========================
+// PARTE 1 DE 3
+// ===========================
 
-const container = document.getElementById("container");
+// ---------- Lista de palabras ----------
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+const words = [
 
-const camera = new THREE.PerspectiveCamera(
-45,
-window.innerWidth/window.innerHeight,
-0.1,
-1000
-);
+"Ale",
+"Linda",
+"Bonita",
+"Hermosa",
+"Inteligente",
+"Maravillosa",
+"Especial",
+"Increíble",
+"Única",
+"Admirable",
+"Amable",
+"Dulce",
+"Brillante",
+"Encantadora",
+"Sonrisa hermosa",
+"Ojos bonitos",
+"Genial",
+"Alegre",
+"Creativa",
+"Elegante",
+"Fuerte",
+"Valiente",
+"Auténtica",
+"Radiante",
+"Carismática",
+"Fantástica",
+"Encantadora",
+"Mi amiga",
+"Lo mejor para ti",
+"Nunca cambies"
 
-camera.position.set(0,2,8);
+];
 
-const renderer = new THREE.WebGLRenderer({
-antialias:true
-});
+// ---------- Elementos ----------
 
-renderer.setPixelRatio(window.devicePixelRatio);
+const container = document.getElementById("wordContainer");
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
 
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
+let playing = false;
 
-container.appendChild(renderer.domElement);
+// ---------- Botón música ----------
 
-const ambient = new THREE.AmbientLight(0xffffff,1.3);
-scene.add(ambient);
+musicBtn.addEventListener("click", () => {
 
-const light = new THREE.PointLight(0xbb66ff,40);
-light.position.set(10,10,10);
-scene.add(light);
+    if (!playing) {
 
-const geometry = new THREE.SphereGeometry(1.25,128,128);
+        music.play();
 
-const material = new THREE.MeshPhysicalMaterial({
+        musicBtn.innerHTML = "⏸ Pausar música";
 
-color:0x050505,
+        playing = true;
 
-metalness:0.9,
+    } else {
 
-roughness:0.2,
+        music.pause();
 
-clearcoat:1,
+        musicBtn.innerHTML = "▶ Reproducir música";
 
-clearcoatRoughness:0,
+        playing = false;
 
-emissive:0x220044,
-
-emissiveIntensity:0.45
-
-});
-
-const planet = new THREE.Mesh(
-geometry,
-material
-);
-
-scene.add(planet);
-
-const ringGeometry = new THREE.TorusGeometry(
-1.9,
-0.05,
-32,
-250
-);
-
-const ringMaterial = new THREE.MeshBasicMaterial({
-
-color:0xbb66ff
+    }
 
 });
 
-const ring = new THREE.Mesh(
-ringGeometry,
-ringMaterial
-);
+// ---------- Crear palabras ----------
 
-ring.rotation.x=Math.PI/2.5;
+const items = [];
 
-scene.add(ring);
+const radius = 230;
 
-const starsGeometry=new THREE.BufferGeometry();
+words.forEach((text, index) => {
 
-const starVertices=[];
+    const word = document.createElement("div");
 
-for(let i=0;i<7000;i++){
+    word.className = "word";
 
-starVertices.push(
+    word.innerText = text;
 
-(Math.random()-0.5)*250,
+    container.appendChild(word);
 
-(Math.random()-0.5)*250,
+    items.push(word);
 
-(Math.random()-0.5)*250
+});
 
-);
+let angle = 0;
+
+// ---------- Fondo de estrellas ----------
+
+const canvas = document.getElementById("stars");
+
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+
+    canvas.width = window.innerWidth;
+
+    canvas.height = window.innerHeight;
 
 }
 
-starsGeometry.setAttribute(
+resizeCanvas();
 
-"position",
+window.addEventListener("resize", resizeCanvas);
 
-new THREE.Float32BufferAttribute(
-starVertices,
-3
-)
+const stars = [];
 
-);
+for(let i=0;i<220;i++){
 
-const starsMaterial=new THREE.PointsMaterial({
+    stars.push({
 
-color:0xffffff,
+        x:Math.random()*canvas.width,
 
-size:0.22
+        y:Math.random()*canvas.height,
 
-});
+        r:Math.random()*2,
 
-const stars=new THREE.Points(
+        s:Math.random()*0.6+0.2
 
-starsGeometry,
+    });
 
-starsMaterial
+}
+// ===========================
+// PARTE 2 DE 3
+// ===========================
 
-);
+// ---------- Posicionar palabras en una esfera ----------
 
-scene.add(stars);
+function updateWords(){
 
-function animate(){
+    angle += 0.0035;
 
-requestAnimationFrame(animate);
+    items.forEach((word,index)=>{
 
-planet.rotation.y+=0.003;
+        const phi = Math.acos(-1 + (2 * index) / items.length);
 
-planet.rotation.x+=0.0008;
+        const theta = Math.sqrt(items.length * Math.PI) * phi + angle;
 
-ring.rotation.z+=0.002;
+        const x = radius * Math.cos(theta) * Math.sin(phi);
 
-stars.rotation.y+=0.00015;
+        const y = radius * Math.sin(theta) * Math.sin(phi);
 
-camera.position.x=Math.sin(Date.now()*0.00015)*0.45;
+        const z = radius * Math.cos(phi);
 
-camera.lookAt(0,0,0);
+        const scale = (z + 500) / 700;
 
-renderer.render(scene,camera);
+        word.style.transform =
+        `translate3d(${x}px,${y}px,${z}px) scale(${scale})`;
+
+        word.style.opacity = scale;
+
+        word.style.zIndex = Math.floor(scale * 100);
+
+    });
+
+}
+
+// ---------- Dibujar estrellas ----------
+
+function drawStars(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "white";
+
+    stars.forEach(star=>{
+
+        ctx.beginPath();
+
+        ctx.arc(star.x,star.y,star.r,0,Math.PI*2);
+
+        ctx.fill();
+
+        star.y += star.s;
+
+        if(star.y > canvas.height){
+
+            star.y = 0;
+
+            star.x = Math.random()*canvas.width;
+
+        }
+
+    });
+  // ===========================
+// PARTE 3 DE 3
+// ===========================
+
+// ---------- Animación principal ----------
+
+function animate() {
+
+    drawStars();
+
+    updateWords();
+
+    requestAnimationFrame(animate);
 
 }
 
 animate();
 
-window.addEventListener("resize",()=>{
+// ---------- Movimiento suave con el mouse ----------
 
-camera.aspect=window.innerWidth/window.innerHeight;
+document.addEventListener("mousemove", (e) => {
 
-camera.updateProjectionMatrix();
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * -20;
 
-renderer.setSize(
-
-window.innerWidth,
-
-window.innerHeight
-
-);
+    container.style.transform =
+        `rotateX(${y}deg) rotateY(${x}deg)`;
 
 });
+
+// ---------- Movimiento automático en celular ----------
+
+let auto = 0;
+
+setInterval(() => {
+
+    auto += 0.3;
+
+    container.style.transform =
+        `rotateY(${auto}deg) rotateX(${Math.sin(auto/15)*8}deg)`;
+
+}, 30);
+
+// ---------- Reiniciar música cuando termine ----------
+
+music.addEventListener("ended", () => {
+
+    playing = false;
+
+    music.currentTime = 0;
+
+    musicBtn.innerHTML = "▶ Reproducir música";
+
+});
+
+// ---------- Precargar canción ----------
+
+music.load();
+
+console.log("Proyecto para Ale cargado correctamente 🤍");
+
+}
